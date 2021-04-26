@@ -7,6 +7,8 @@ import java.util.*
  */
 data class MediaStoreImage(
     val dateAdded: Date,
-    val imageWidth: Double = 0.0,
-    val imageHeight: Double = 0.0
+    var originalWidth: Double = 0.0,
+    var originalHeight: Double = 0.0,
+    var compressedWidth: Double = 0.0,
+    var compressedHeight: Double = 0.0
 ) : MediaStoreBaseModel()

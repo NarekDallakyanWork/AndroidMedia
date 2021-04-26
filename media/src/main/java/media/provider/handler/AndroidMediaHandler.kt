@@ -98,7 +98,9 @@ class AndroidMediaHandler(private var mContext: Context) : AndroidMediaStore {
             val projection = arrayOf(
                 MediaStore.Images.Media._ID,
                 MediaStore.Images.Media.DISPLAY_NAME,
-                MediaStore.Images.Media.DATE_ADDED
+                MediaStore.Images.Media.DATE_ADDED,
+                MediaStore.Images.Media.WIDTH,
+                MediaStore.Images.Media.HEIGHT
             )
 
             /**
@@ -156,6 +158,11 @@ class AndroidMediaHandler(private var mContext: Context) : AndroidMediaStore {
                 val displayNameColumn =
                     cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME)
 
+                // Getting Image width and height indexes
+                val imageWidthIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.WIDTH)
+                val imageHeightIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.HEIGHT)
+
+
                 Log.i("AndroidMediaHandlerTag", "Found ${cursor.count} images")
                 while (cursor.moveToNext()) {
 
@@ -164,6 +171,11 @@ class AndroidMediaHandler(private var mContext: Context) : AndroidMediaStore {
                     val dateModified =
                         Date(TimeUnit.SECONDS.toMillis(cursor.getLong(dateModifiedColumn)))
                     val displayName = cursor.getString(displayNameColumn)
+
+                    // Here we getting image width `original` values from table
+                    val imageWidth = cursor.getDouble(imageWidthIndex)
+                    val imageHeight = cursor.getDouble(imageHeightIndex)
+
 
 
                     /**
@@ -187,6 +199,8 @@ class AndroidMediaHandler(private var mContext: Context) : AndroidMediaStore {
                     imageItemModel.contentUri = contentUri
                     imageItemModel.displayName = displayName
                     imageItemModel.id = id
+                    imageItemModel.originalWidth = imageWidth
+                    imageItemModel.originalHeight = imageHeight
 
                     images += imageItemModel
 
