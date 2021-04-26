@@ -2,6 +2,7 @@ package android.files.sheet
 
 import android.Manifest
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.karumi.dexter.Dexter
@@ -18,6 +19,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Init observers
+        initObservers()
 
         Dexter.withContext(this)
             .withPermissions(
@@ -37,5 +41,16 @@ class MainActivity : AppCompatActivity() {
                 }
             })
             .check()
+    }
+
+    /**
+     *  Listening corresponds live data's
+     */
+    private fun initObservers() {
+
+        mediaStoreViewModel.imagesLiveData().observe(this, { mediaImages ->
+
+            Toast.makeText(this, "Images size:  ${mediaImages.size}", Toast.LENGTH_LONG).show()
+        })
     }
 }
